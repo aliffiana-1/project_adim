@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 
@@ -19,4 +20,6 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [Controller::class, 'dashboard'])->name('dashboard');
+Route::get('article', [AuthorController::class, 'events_admin'])->name('article');
+
 
