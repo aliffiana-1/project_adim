@@ -103,7 +103,7 @@
                             <a class="nav-link {{ $title == 'Webinar' || $title == 'Webinar Details' ? 'active' : '' }}" style="font-size: 14px;" href="{{ route('webinar') }}">Webinar / Seminar</a>
                         </li> --}}
                         <li class="nav-item">
-                            <a class="nav-link {{ $title == 'Article' || $title == 'News Details' ? 'active' : '' }}" style="font-size: 14px;" {{-- href="{{ route('news') }}" --}}>Article</a>
+                            <a class="nav-link {{ $title == 'Article' || $title == 'News Details' ? 'active' : '' }}" style="font-size: 14px;" href="{{ route('article') }}">Article</a>
                         </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link {{ $title == 'Tracer Study' ? 'active' : '' }}" style="font-size: 14px;"
@@ -135,7 +135,7 @@
                                 <i class="bi bi-search"></i>
                             </button>
                         </form>
-                        @if ($session == false)
+                        {{-- @if ($session == false)
                         <div class="d-flex">
                             <a href="{{ route('login') }}" class="btn btn-dark ms-3">
                                 <i class="fa fa-user me-2"></i>
@@ -146,19 +146,19 @@
                         <div class="dropdown">
                             @if ($user_role == 'alumni')
                             <div style="padding-left:20px; padding-right:80px; padding-top:5px;">
-                                <a {{-- href="{{ route('alumni/dashboard') }}" --}} class="btn btn-dark ">
+                                <a href="{{ route('alumni/dashboard') }}" class="btn btn-dark ">
                                     <i class="fas fa-user" style="padding-right: 5px;"></i>
                                     Back to Alumni</a>
                             </div>
                             @elseif($user_role == 'admin')
                             <div style="padding-left:20px; padding-right:80px; padding-top:5px;">
-                                <a {{-- href="{{ route('admin/dashboard') }}" --}} class="btn btn-dark ">
+                                <a href="{{ route('admin/dashboard') }}" class="btn btn-dark ">
                                     <i class="fas fa-user-cog" style="padding-right: 5px;"></i>
                                     Back to Admin</a>
                             </div>
-                            @endif
+                            @endif --}}
                         </div>
-                        @endif
+                        {{-- @endif --}}
                     </div>
                     @endif
                 </div>
@@ -230,6 +230,11 @@
     @if ($title == 'Article')
     <!-- Service Start -->
     @yield('article')
+    <!-- Service End -->
+    @endif
+    @if ($title == 'Article Editor')
+    <!-- Service Start -->
+    @yield('article_editor')
     <!-- Service End -->
     @endif
 
