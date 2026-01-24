@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [Controller::class, 'dashboard'])->name('dashboard');
-Route::get('article', [AuthorController::class, 'events_admin'])->name('article');
+Route::get('/article', [AuthorController::class, 'article'])->name('article');
+Route::get('/article_editor', [AuthorController::class, 'article_editor'])->name('article_editor');
 
 
