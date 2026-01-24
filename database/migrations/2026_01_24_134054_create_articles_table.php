@@ -14,15 +14,16 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('category_id')->constrained('categories');
-            $table->foreignId('article_level_id')->constrained('article_levels');
-
+            $table->unsignedBigInteger('id_article')->primary();
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id_user')->on('users');
+            $table->unsignedBigInteger('id_category');
+            $table->foreign('id_category')->references('id_category')->on('categories');
+            $table->unsignedBigInteger('id_article_level');
+            $table->foreign('id_article_level')->references('id_article_level')->on('article_levels');
             $table->string('slug')->unique();
             $table->string('title');
             $table->text('content');
-            $table->string('image')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->boolean('is_published')->default(false);
 
