@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class CategoriesModel extends Model
 {
     use HasFactory;
-    protected $table = 'tb_categories';
+    protected $table = 'categories';
     protected $primaryKey = 'id_category';
     public $timestamps = false;
 
