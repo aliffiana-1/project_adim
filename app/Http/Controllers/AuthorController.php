@@ -7,7 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
-use App\Models\ArticleModel;
+use App\Models\ArticlesModel;
 use App\Models\EventsModel;
 use App\Models\FooterModel;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class AuthorController extends BaseController
     public function __construct()
     {
         date_default_timezone_set('Asia/Jakarta');
-        $this->ArticleModel = new ArticleModel();
+        $this->ArticlesModel = new ArticlesModel();
     }
 
     public function article(Request $request)
