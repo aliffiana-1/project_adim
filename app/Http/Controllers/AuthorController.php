@@ -7,13 +7,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
-use App\Models\AlumniModel;
-use App\Models\TeamsModel;
-use App\Models\VacancyModel;
+use App\Models\ArticleModel;
 use App\Models\EventsModel;
-use App\Models\TracerStudyModel;
-use App\Models\FormPenggunaModel;
-use App\Models\FormAlumniModel;
 use App\Models\FooterModel;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Session\Session;
@@ -24,11 +19,7 @@ class AuthorController extends BaseController
     public function __construct()
     {
         date_default_timezone_set('Asia/Jakarta');
-        $this->AlumniModel = new AlumniModel();
-        $this->EventsModel = new EventsModel();
-        // $this->VacancyModel = new VacancyModel();
-        $this->FooterModel = new FooterModel();
-        // $this->TeamsModel = new TeamsModel();
+        $this->ArticleModel = new ArticleModel();
     }
 
     public function article(Request $request)
@@ -69,7 +60,11 @@ class AuthorController extends BaseController
             $admin_name = 'Admin'; // Default name
             // $data_footer = FooterModel::latest('footer_created_at')->first();
             $search = $request->search;
-            $article_data = DB::table('articles') ->join('categories', 'articles.id_category', '=', 'categories.id_category')->select('articles.*', 'categories.category_name')->orderBy('articles.created_at', 'desc');
+            $article_data = DB::table('articles')
+            ->join('categories', 'articles.id_category', '=', 'categories.id_category')
+            ->join('article_levels', 'articles.id_article_level', '=', 'article_levels.id_article_level')
+            ->select('articles.*', 'categories.category_name', 'article_levels.article_level_name')
+            ->orderBy('articles.created_at', 'desc');
 
             $sortir = 10;
 
@@ -96,6 +91,8 @@ class AuthorController extends BaseController
                 'article_data' => $article_data->paginate($sortir),
                 // 'data_footer' => $data_footer,
                 'session' => $session,
+                'categories' => DB::table('categories')->get(),
+                'levels' => DB::table('article_levels')->get(),
             ]);
         // } else {
         //     return redirect('/');

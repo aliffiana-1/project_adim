@@ -39,80 +39,81 @@
                     <thead>
                         <tr class="text-uppercase" style="font-weight: bold; font-size:12px">
                             <td>No</td>
-                            <td>Date Created</td>
-                            <td>Date Updated</td>
                             <td>Title</td>
-                            <td>Type</td>
-                            <td style="text-align: center;">Publish</td>
+                            <td>Content</td>
+                            <td>Category</td>
+                            <td>Level</td>
+                            <td>Created At</td>
+                            <td style="text-align: center;">Published</td>
                             <td colspan="2" style="text-align: center;">Action</td>
                         </tr>
                     </thead>
-                    <!-- <tbody class="text-uppercase">
+                     <tbody class="text-uppercase">
                         @if (!$article_data->isEmpty())
                             <?php $limit = isset($_GET['limit']) ? $_GET['limit'] : request('sortir');
                             $page = isset($_GET['page']) ? $_GET['page'] : 1;
                             
                             $no = $limit * $page - $limit; ?>
-                            @foreach ($article_data as $ev)
+                            @foreach ($article_data as $data)
                                 <tr style="font-size:12px">
                                     <td>{{ ++$no }}</td>
-                                    <td class="hideextra">{{ date('j F Y, H:i', strtotime($ev->events_inserted_at)) }}
-                                    <td class="hideextra">{{ date('j F Y, H:i', strtotime($ev->events_updated_at)) }}
+                                    <td>{{ $data->title }}
                                     </td>
-                                    <td>{{ $ev->events_title }}</td>
-                                    <td>
-                                        @if ($ev->events_type == 1)
-                                            News
+                                    <td>{{ $data->content }}</td>
+                                    <td>{{ $data->category_name }}</td>
+                                    <td>{{ $data->article_level_name }}</td>
+                                    <td>{{ date('j F Y, H:i', strtotime($data->created_at)) }}</td>
+                                    <td style="text-align: center;">
+                                        @if ($data->is_published == 1)
+                                            <i class="fas fa-check" style="color: rgb(67, 214, 67)" title="Published"></i>
                                         @else
-                                            Webinar
+                                            <i class="fas fa-clock" style="color: red" title="Unpublished"></i>
                                         @endif
                                     </td>
-                                    <td style="text-align: center;"><i
-                                            class="fas fa-{{ $ev->events_status == 1 ? 'check' : 'clock' }}"
-                                            style="color: {{ $ev->events_status == 1 ? 'rgb(67, 214, 67)' : 'red' }}"
-                                            title="{{ $ev->events_status == 1 ? 'Published' : 'Unpublished' }}"></i></td>
+                                  
                                     <td style="text-align: center;">
                                         <a style="text-decoration: none" class="fa fa-edit text-warning" title="Update"
-                                            data-bs-toggle="modal" data-bs-target="#EditModal-{{ $ev->id_article }}"
-                                            href="#EditModal-{{ $ev->id_article }}"></a>
+                                            data-bs-toggle="modal" data-bs-target="#EditModal-{{ $data->id_article }}"
+                                            href="#EditModal-{{ $data->id_article }}"></a>
                                     </td>
                                     {{-- <td style="text-align: center;">
                                     <a style="text-decoration: none" class="fa fa-edit text-info" title="Edit"
-                                        data-bs-toggle="modal" data-bs-target="#updateModal-{{ $ev->id_article }}"
-                                        href="#updateModal-{{ $ev->id_article }}"></a>
+                                        data-bs-toggle="modal" data-bs-target="#updateModal-{{ $data->id_article }}"
+                                        href="#updateModal-{{ $data->id_article }}"></a>
                                 </td> --}}
                                     <td style="text-align: center;">
                                         <a style="text-decoration: none" class="far fa-trash-alt  text-danger"
                                             title="Delete" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal-{{ $ev->id_article }}"
-                                            href="#deleteModal-{{ $ev->id_article }}"></a>
+                                            data-bs-target="#deleteModal-{{ $data->id_article }}"
+                                            href="#deleteModal-{{ $data->id_article }}"></a>
                                     </td>
                                 </tr>
-                                <div class="modal fade" id="updateModal-{{ $ev->id_article }}" tabindex="-1" role="dialog"
+
+                                <div class="modal fade" id="updateModal-{{ $data->id_article }}" tabindex="-1" role="dialog"
                                     aria-labelledby="addModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="addModalLongTitle">Publish events</h5>
+                                                <h5 class="modal-title" id="addModalLongTitle">Publish Article</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close">
                                                 </button>
                                             </div>
                                             <div class="modal-body">
                                                 <form 
-                                                {{-- action="{{ route('admin/update-events') }}"  --}}
+                                                {{-- action="{{ route('admin/update-article') }}"  --}}
                                                 method="POST">
                                                     @csrf
-                                                    <input type="hidden" name="id_article" value="{{ $ev->id_article }}">
+                                                    <input type="hidden" name="id_article" value="{{ $data->id_article }}">
                                                     <div class="mb-3">
-                                                        <label for="events_type" class="form-label"></label>
-                                                        <select class="form-control" name="events_status"
-                                                            id="events_status-{{ $ev->id_article }}" style="width: 100%">
+                                                        <label for="is_published" class="form-label"></label>
+                                                        <select class="form-control" name="is_published"
+                                                            id="is_published-{{ $data->id_article }}" style="width: 100%">
                                                             <option> --- Choose --- </option>
-                                                            @if ($ev->events_status != 1)
+                                                            @if ($data->is_published != 1)
                                                                 <option value="1">Publish</option>
                                                             @endif
-                                                            @if ($ev->events_status != 2)
+                                                            @if ($data->is_published != 2)
                                                                 <option value="2">Unpublish</option>
                                                             @endif
                                                             {{-- pending = 0, publish = 1, unpublish = 2 --}}
@@ -130,7 +131,7 @@
                                 </div>
 
 
-                                <div class="modal fade" id="EditModal-{{ $ev->id_article }}" tabindex="-1" role="dialog"
+                                <div class="modal fade" id="EditModal-{{ $data->id_article }}" tabindex="-1" role="dialog"
                                     aria-labelledby="addModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -141,42 +142,32 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form 
-                                                {{-- action="{{ route('admin/edit-events') }}"  --}}
-                                                method="POST"
+                                                <form action="{{ route('edit_article') }}" method="POST"
                                                     enctype="multipart/form-data">
                                                     @csrf
+
+                                                    <input type="hidden" required name="id_article" value="{{ $data->id_article }}">
+
+
                                                     <div class="mb-3">
-                                                        <label class="form-label">Preview</label>
-                                                    </div>
-                                                    <input type="hidden" required name="id_article" value="{{ $ev->id_article }}">
-                                                    <div class="mb-3">
-                                                        <img src="{{ asset('events/' . $ev->events_img) }}"
-                                                            width="200px">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <input  class="form-control" type="file"
-                                                            value="{{ $ev->events_img }}" name="events_img"
-                                                            id="events_img">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="events_title" class="form-label">Input New
+                                                        <label for="title" class="form-label">Input New
                                                             Title</label>
-                                                        <input required value="{{ $ev->events_title }}" class="form-control"
-                                                            type="text" name="events_title">
+                                                        <input required value="{{ $data->title }}" class="form-control"
+                                                            type="text" name="title">
                                                     </div>
+                                                    
                                                     <div class="mb-3">
-                                                        <label for="events_desc" class="form-label">Input New
+                                                        <label for="content" class="form-label">Input New
                                                             Description</label>
-                                                        <textarea required class="form-control" name="events_desc" id="events_desc_update-{{ $ev->id_article }}">{!! $ev->events_desc !!}</textarea>
+                                                        <textarea required class="form-control" name="content" id="content_update-{{ $data->id_article }}">{!! $data->content !!}</textarea>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="events_status">Publish</label>
+                                                        <label for="is_published">Publish</label>
                                                     </div>
                                                     <div class="form-check">
                                                         <input required class="form-check-input" value="1" type="radio"
-                                                            name="events_status" id="flexRadioDefault1"
-                                                            {{ $ev->events_status == 1 ? 'checked' : '' }}>
+                                                            name="is_published" id="flexRadioDefault1"
+                                                            {{ $data->is_published == 1 ? 'checked' : '' }}>
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Yes
                                                         </label>
@@ -184,32 +175,33 @@
                                                     <div class="form-check">
                                                         <input class="form-check-input" value="2" type="radio"
                                                             required
-                                                            name="events_status" id="flexRadioDefault2"
-                                                            {{ $ev->events_status == 2 ? 'checked' : '' }}>
+                                                            name="is_published" id="flexRadioDefault2"
+                                                            {{ $data->is_published == 2 ? 'checked' : '' }}>
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="events_type">Change Type</label>
+                                                        <label for="id_category">Change Category</label>
                                                     </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" value="1" type="radio"
-                                                            required
-                                                            name="events_type" id="flexRadioDefault1"
-                                                            {{ $ev->events_type == 1 ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="flexRadioDefault1">
-                                                            News
-                                                        </label>
+                                                    <div class="mb-3">
+                                                        <select class="form-control" name="id_category" id="id_category" required>
+                                                            <option value="">Choose Category</option>
+                                                            @foreach ($categories as $key)
+                                                                <option value="{{ $key->id_category }}" {{ $data->id_category == $key->id_category ? 'selected' : '' }}>{{ $key->category_name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" value="2" type="radio"
-                                                            name="events_type" id="flexRadioDefault2"
-                                                            required
-                                                            {{ $ev->events_type == 2 ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="flexRadioDefault2">
-                                                            Webinar
-                                                        </label>
+                                                    <div class="form-group">
+                                                        <label for="id_article_level">Change Level</label>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <select class="form-control" name="id_article_level" id="id_article_level" required>
+                                                            <option value="">Choose Level</option>
+                                                            @foreach ($levels as $key)
+                                                                <option value="{{ $key->id_article_level }}" {{ $data->id_article_level == $key->id_article_level ? 'selected' : '' }}>{{ $key->article_level_name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
@@ -222,26 +214,26 @@
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="deleteModal-{{ $ev->id_article }}" tabindex="-1"
+                                <div class="modal fade" id="deleteModal-{{ $data->id_article }}" tabindex="-1"
                                     role="dialog" aria-labelledby="addModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="addModalLongTitle">Delete events</h5>
+                                                <h5 class="modal-title" id="addModalLongTitle">Delete Article</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close">
                                                 </button>
                                             </div>
                                             <div class="modal-body">
                                                 <form 
-                                                {{-- action="{{ route('admin/delete-events') }}"  --}}
+                                                {{-- action="{{ route('admin/delete-article') }}"  --}}
                                                 method="POST">
                                                     @csrf
-                                                    <input type="hidden" name="id_article" value="{{ $ev->id_article }}">
+                                                    <input type="hidden" name="id_article" value="{{ $data->id_article }}">
                                                     <div class="input-group mb-3">
                                                         <label for="question" class="form-label"
                                                             style="text-transform: uppercase">Are you sure want to delete
-                                                            '{{ $ev->events_title }}' Event?</label>
+                                                            '{{ $data->title }}' Article?</label>
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
@@ -259,7 +251,7 @@
                                 <td colspan="8" style="text-align: center"> No data </td>
                             </tr>
                         @endif
-                    </tbody> -->
+                    </tbody>
                 </table>
             </div>
             <div class="row">
@@ -296,53 +288,56 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLongTitle">Article Center</h5>
+                    <h5 class="modal-title" id="addModalLongTitle">Add Article</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body">
                     <form 
-                    {{-- action="{{ route('admin/store-events') }}"  --}}
+                    {{-- action="{{ route('admin/store-article') }}"  --}}
                     method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-floating mb-2">
-                            <input type="text" name="events_title" class="form-control" id="events_title"
+                            <input type="text" name="title" class="form-control" id="title"
                                 placeholder="Title" required>
-                            <label for="events_title">Title</label>
+                            <label for="title">Title</label>
                         </div>
                         <div class="form-floating mb-2">
-                            <select required class="form-control" id="floatingSelect" name="events_type">
-                                <option value="">Choose Type</option>
-                                <option value="1">News</option>
-                                <option value="2">Webinar</option>
+                            <select id="id_category" name="id_category" class="form-control select2-search" style="width: 100%">
+                                <option value=""> Select Category </option>
+                                @foreach ($categories as $key)
+                                    <option value="{{ $key->id_category }}">{{ $key->category_name }}</option>
+                                @endforeach
                             </select>
-                            <label for="floatingSelect">Type</label>
+                            <label for="floatingSelect">Category</label>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="datetime-local" name="events_date" class="form-control" id="events_date"
-                                required>
-                            <label for="events_date">Event date</label>
+                            <select id="id_article_level" name="id_article_level" class="form-control select2-search" style="width: 100%">
+                                <option value=""> Select Level </option>
+                                @foreach ($levels as $key)
+                                    <option value="{{ $key->id_article_level }}">{{ $key->article_level_name }}</option>
+                                @endforeach
+                            </select>
+                            <label for="floatingSelect">Level</label>
                         </div>
+
                         <div class="form-group mb-2">
-                            <label for="events_desc">Description</label>
-                            <textarea class="form-control" name="events_desc" id="events_desc" rows="3"></textarea>
+                            <label for="content">Description</label>
+                            <textarea class="form-control" name="content" id="content" rows="3"></textarea>
                         </div>
-                        <div class="form-group mb-2">
-                            <label for="events_img">Image (<span style="font-weight: bold">Max. 2 MB</span>)</label>
-                            <input type="file" class="form-control" name="events_img" id="events_img" required>
-                        </div>
+
                         <div class="form-group">
-                            <label for="events_status">Publish</label>
+                            <label for="is_published">Publish</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" value="1" type="radio" name="events_status"
+                            <input class="form-check-input" value="1" type="radio" name="is_published"
                                 id="flexRadioDefault1" required>
                             <label class="form-check-label" for="flexRadioDefault1">
                                 Yes
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" required value="2" type="radio" name="events_status"
+                            <input class="form-check-input" required value="2" type="radio" name="is_published"
                                 id="flexRadioDefault2">
                             <label class="form-check-label" for="flexRadioDefault2">
                                 No
@@ -437,26 +432,26 @@
             $('#search_form').submit();
         }
         $(document).ready(function() {
-            $('#events_type').select2({
+            $('#id_category').select2({
                 dropdownParent: $('#addModal')
             });
 
-            @foreach ($article_data as $Event)
-                $('#events_status-{{ $Event->id_events }}').select2({
-                    dropdownParent: $('#updateModal-{{ $Event->id_events }}')
+            @foreach ($article_data as $dataent)
+                $('#is_published-{{ $dataent->id_article }}').select2({
+                    dropdownParent: $('#updateModal-{{ $dataent->id_article }}')
                 });
             @endforeach
         });
 
         ClassicEditor
-            .create(document.querySelector('#events_desc'))
+            .create(document.querySelector('#content'))
             .catch(error => {
                 console.error(error);
             });
 
-        @foreach ($article_data as $ev)
+        @foreach ($article_data as $data)
             ClassicEditor
-                .create(document.querySelector('#events_desc_update-{{ $ev->id_article }}'))
+                .create(document.querySelector('#content_update-{{ $data->id_article }}'))
                 .catch(error => {
                     console.error(error);
                 });
