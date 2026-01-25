@@ -102,15 +102,7 @@
                     </ul>
                     @if ($title != 'Form Pengguna')
                     <div class="d-flex">
-                        @if ($title == 'News' || $title == 'News Details')
-                        <?php $link = 'news'; ?>
                         @elseif ($title == 'Dashboard' || $title == 'About Us')
-                        <?php $link = 'dashboard'; ?>
-                        @elseif ($title == 'Webinar' || $title == 'Webinar Details')
-                        <?php $link = 'webinar'; ?>
-                        @elseif ($title == 'Find Job' || $title == 'Detail Job')
-                        <?php $link = 'findjob'; ?>
-                        @elseif ($title == 'Tracer Study')
                         <?php $link = 'dashboard'; ?>
                         @elseif ($title == 'Article')
                         <?php $link = 'article'; ?>
@@ -122,44 +114,14 @@
 
                         <div class="d-flex">
                             <a href="{{ route('login') }}" class="btn btn-dark ms-3">
-                        <i class="fa fa-user me-2"></i>
-                        Login
-                        </a>
-                        {{-- <form class="d-flex" action="{{ route($link) }}" method="GET">
-                        <input class="form-control me-2" type="search" placeholder="Search" name="search" value="{{ request('search') }}" placeholder="Type search keyword" aria-label="Search">
-                        <button class="btn" style="background-color: maroon; border: none; color: white;" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                        </form> --}}
-                        {{-- @if ($session == false)
-                        <div class="d-flex">
-                            <a href="{{ route('login') }}" class="btn btn-dark ms-3">
-                        <i class="fa fa-user me-2"></i>
-                        Login
-                        </a>
-                    </div>
-                    @else
-                    <div class="dropdown">
-                        @if ($user_role == 'alumni')
-                        <div style="padding-left:20px; padding-right:80px; padding-top:5px;">
-                            <a href="{{ route('alumni/dashboard') }}" class="btn btn-dark ">
-                                <i class="fas fa-user" style="padding-right: 5px;"></i>
-                                Back to Alumni</a>
+                                <i class="fa fa-user me-2"></i>
+                                Login
+                            </a>
                         </div>
-                        @elseif($user_role == 'admin')
-                        <div style="padding-left:20px; padding-right:80px; padding-top:5px;">
-                            <a href="{{ route('admin/dashboard') }}" class="btn btn-dark ">
-                                <i class="fas fa-user-cog" style="padding-right: 5px;"></i>
-                                Back to Admin</a>
-                        </div>
-                        @endif --}}
+                        @endif
                     </div>
-                    {{-- @endif --}}
                 </div>
-                @endif
-            </div>
-    </div>
-    </nav>
+        </nav>
     </div>
 
     @if ($title == 'Dashboard')
@@ -186,7 +148,7 @@
                             BPJS
                         </h5>
                         <h3 class="display-1 text-white mb-md-4 animated zoomIn">
-                            ENTREPRENEURSHIP
+                            
                         </h3>
                     </div>
                 </div>

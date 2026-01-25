@@ -183,7 +183,7 @@
                                             <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
                                     </form>
-                                </div> {{-- tutup modal-body --}}
+                                </div>
                             </div>
                         </div>
                     </div>

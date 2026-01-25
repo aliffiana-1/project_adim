@@ -26,9 +26,7 @@ class AuthorController extends BaseController
     public function article(Request $request)
     {
         $session = $request->Session()->get('logged_in');
-        $id_alumni = $request->Session()->get('id_alumni');
         $user_role = $request->Session()->get('role');
-        $id_alumni = $request->Session()->get('id_alumni');
         $search = $request->search;
         $data_articles = ArticlesModel::where('is_published', 1)
             ->select('articles.*', 'categories.category_name', 'article_levels.article_level_name', 'articles.created_at as article_created_at')
@@ -53,11 +51,9 @@ class AuthorController extends BaseController
     //events news
     public function article_editor(Request $request)
     {
-        // if ($request->Session()->get('logged_in') == true && $request->Session()->get('role') == "admin") {
-        $session = true; // Skip login for testing
-        $user_role = 'admin'; // Set role to admin
-        $admin_name = 'Admin'; // Default name
-        // $data_footer = FooterModel::latest('footer_created_at')->first();
+        $session = true; 
+        $user_role = 'admin';
+        $admin_name = 'Admin';
         $search = $request->search;
         $article_data = DB::table('articles')
             ->join('categories', 'articles.id_category', '=', 'categories.id_category')
@@ -93,15 +89,12 @@ class AuthorController extends BaseController
             'categories' => DB::table('categories')->get(),
             'levels' => DB::table('article_levels')->get(),
         ]);
-        // } else {
-        //     return redirect('/');
-        // }
     }
 
     public function store_article(Request $request)
     {
         $data = new ArticlesModel();
-        $data->id_user = 1; // Assuming a default user ID, adjust as needed
+        $data->id_user = 1; 
         $data->id_category = $request->id_category;
         $data->id_article_level = $request->id_article_level;
         $data->title = $request->title;
