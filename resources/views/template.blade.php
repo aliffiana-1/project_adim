@@ -166,7 +166,7 @@
     <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="w-100 responsive" src="{{ asset('assets/image/bpjs/CDC-Seminar.png') }}" style="object-fit: cover; height: 710px;" alt="Image" />
+                <img class="w-100 responsive" src="{{ asset('assets/image/bpjs/bpjs-Seminar.png') }}" style="object-fit: cover; height: 710px;" alt="Image" />
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 900px">
                         <h5 class="text-white text-uppercase mb-3 animated slideInDown">
@@ -179,7 +179,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img class="w-100 responsive" src="{{ asset('assets/image/bpjs/CDC-Entrepreneurship.png') }}" style="object-fit: cover; height: 710px;" alt="Image" />
+                <img class="w-100 responsive" src="{{ asset('assets/image/bpjs/bpjs-Entrepreneurship.png') }}" style="object-fit: cover; height: 710px;" alt="Image" />
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 900px">
                         <h5 class="text-white text-uppercase mb-3 animated slideInDown">
