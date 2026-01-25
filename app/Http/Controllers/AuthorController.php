@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
 use App\Models\AlumniModel;
 use App\Models\TeamsModel;
 use App\Models\VacancyModel;
@@ -66,9 +67,10 @@ class AuthorController extends BaseController
             $session = true; // Skip login for testing
             $user_role = 'admin'; // Set role to admin
             $admin_name = 'Admin'; // Default name
-            $data_footer = FooterModel::latest('footer_created_at')->first();
+            // $data_footer = FooterModel::latest('footer_created_at')->first();
             $search = $request->search;
-            $events_data = EventsModel::where('events_softdel', 1)->orderBy('events_inserted_at', 'desc');
+            $article_data = DB::table('articles') ->join('categories', 'articles.id_category', '=', 'categories.id_category')->select('articles.*', 'categories.category_name')->orderBy('articles.created_at', 'desc');
+
             $sortir = 10;
 
             if ($request->sortir) {
@@ -76,23 +78,23 @@ class AuthorController extends BaseController
             }
 
             if ($search) {
-                $events_data->where('events_title', 'like', '%' . $search . '%')->where('events_softdel', 1)
-                    ->orWhere('events_desc', 'like', '%' . $search . '%')->where('events_softdel', 1)
-                    ->orWhere('events_inserted_at', 'like', '%' . $search . '%')->where('events_softdel', 1);
+                $like = '%' . $search . '%';
+                $article_data->where(function ($q) use ($like) {
+                    $q->where('articles.title', 'like', $like)
+                    ->orWhere('categories.category_name', 'like', $like)
+                    ->orWhere('articles.content', 'like', $like);
+                });
 
-                if ($search == 'Webinar' || $search == 'webinar') {
-                    $events_data->orWhere('events_type', 2)->where('events_softdel', 1);
-                } elseif ($search == 'News' || $search == 'news') {
-                    $events_data->orWhere('events_type', 1)->where('events_softdel', 1);
-                }
+                $article_data->orderByRaw(
+                    "CASE WHEN articles.title LIKE ? THEN 0 WHEN categories.category_name LIKE ? THEN 1 WHEN articles.content LIKE ? THEN 2 ELSE 3 END",
+                    [$like, $like, $like])->orderBy('articles.created_at', 'desc');
             }
-
             return view('article_editor', [
                 'title' => 'Article Center',
                 'user_role' => $user_role,
                 'admin_name' => $admin_name,
-                'events_data' => $events_data->paginate($sortir),
-                'data_footer' => $data_footer,
+                'article_data' => $article_data->paginate($sortir),
+                // 'data_footer' => $data_footer,
                 'session' => $session,
             ]);
         // } else {
