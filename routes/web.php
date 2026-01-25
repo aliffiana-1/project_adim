@@ -24,6 +24,8 @@ Route::get('/article', [AuthorController::class, 'article'])->name('article');
 Route::get('/article_editor', [AuthorController::class, 'article_editor'])->name('article_editor');
 Route::post('/store_article', [AuthorController::class, 'store_article'])->name('store_article');
 Route::post('/edit_article', [AuthorController::class, 'edit_article'])->name('edit_article');
+Route::post('/delete_article', [AuthorController::class, 'delete_article'])->name('delete_article');
+
 
 
 
