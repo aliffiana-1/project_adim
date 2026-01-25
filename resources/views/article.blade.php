@@ -133,7 +133,7 @@
                                 @else
                                     <?php $link = '/Article/detail/'; ?>
                                 @endif
-                                <a class="card-button" href="{{ url($link . $ev->id_events) }}"
+                                <a class="card-button" href="{{ url($link . $ev->id_article) }}"
                                     style="text-decoration: none;">Read
                                     More
                                 </a>

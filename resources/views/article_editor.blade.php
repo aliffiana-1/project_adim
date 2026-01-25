@@ -73,22 +73,22 @@
                                             title="{{ $ev->events_status == 1 ? 'Published' : 'Unpublished' }}"></i></td>
                                     <td style="text-align: center;">
                                         <a style="text-decoration: none" class="fa fa-edit text-warning" title="Update"
-                                            data-bs-toggle="modal" data-bs-target="#EditModal-{{ $ev->id_events }}"
-                                            href="#EditModal-{{ $ev->id_events }}"></a>
+                                            data-bs-toggle="modal" data-bs-target="#EditModal-{{ $ev->id_article }}"
+                                            href="#EditModal-{{ $ev->id_article }}"></a>
                                     </td>
                                     {{-- <td style="text-align: center;">
                                     <a style="text-decoration: none" class="fa fa-edit text-info" title="Edit"
-                                        data-bs-toggle="modal" data-bs-target="#updateModal-{{ $ev->id_events }}"
-                                        href="#updateModal-{{ $ev->id_events }}"></a>
+                                        data-bs-toggle="modal" data-bs-target="#updateModal-{{ $ev->id_article }}"
+                                        href="#updateModal-{{ $ev->id_article }}"></a>
                                 </td> --}}
                                     <td style="text-align: center;">
                                         <a style="text-decoration: none" class="far fa-trash-alt  text-danger"
                                             title="Delete" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal-{{ $ev->id_events }}"
-                                            href="#deleteModal-{{ $ev->id_events }}"></a>
+                                            data-bs-target="#deleteModal-{{ $ev->id_article }}"
+                                            href="#deleteModal-{{ $ev->id_article }}"></a>
                                     </td>
                                 </tr>
-                                <div class="modal fade" id="updateModal-{{ $ev->id_events }}" tabindex="-1" role="dialog"
+                                <div class="modal fade" id="updateModal-{{ $ev->id_article }}" tabindex="-1" role="dialog"
                                     aria-labelledby="addModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -103,11 +103,11 @@
                                                 {{-- action="{{ route('admin/update-events') }}"  --}}
                                                 method="POST">
                                                     @csrf
-                                                    <input type="hidden" name="id_events" value="{{ $ev->id_events }}">
+                                                    <input type="hidden" name="id_article" value="{{ $ev->id_article }}">
                                                     <div class="mb-3">
                                                         <label for="events_type" class="form-label"></label>
                                                         <select class="form-control" name="events_status"
-                                                            id="events_status-{{ $ev->id_events }}" style="width: 100%">
+                                                            id="events_status-{{ $ev->id_article }}" style="width: 100%">
                                                             <option> --- Choose --- </option>
                                                             @if ($ev->events_status != 1)
                                                                 <option value="1">Publish</option>
@@ -130,7 +130,7 @@
                                 </div>
 
 
-                                <div class="modal fade" id="EditModal-{{ $ev->id_events }}" tabindex="-1" role="dialog"
+                                <div class="modal fade" id="EditModal-{{ $ev->id_article }}" tabindex="-1" role="dialog"
                                     aria-labelledby="addModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -149,7 +149,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Preview</label>
                                                     </div>
-                                                    <input type="hidden" required name="id_events" value="{{ $ev->id_events }}">
+                                                    <input type="hidden" required name="id_article" value="{{ $ev->id_article }}">
                                                     <div class="mb-3">
                                                         <img src="{{ asset('events/' . $ev->events_img) }}"
                                                             width="200px">
@@ -168,7 +168,7 @@
                                                     <div class="mb-3">
                                                         <label for="events_desc" class="form-label">Input New
                                                             Description</label>
-                                                        <textarea required class="form-control" name="events_desc" id="events_desc_update-{{ $ev->id_events }}">{!! $ev->events_desc !!}</textarea>
+                                                        <textarea required class="form-control" name="events_desc" id="events_desc_update-{{ $ev->id_article }}">{!! $ev->events_desc !!}</textarea>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="events_status">Publish</label>
@@ -222,7 +222,7 @@
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="deleteModal-{{ $ev->id_events }}" tabindex="-1"
+                                <div class="modal fade" id="deleteModal-{{ $ev->id_article }}" tabindex="-1"
                                     role="dialog" aria-labelledby="addModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -237,7 +237,7 @@
                                                 {{-- action="{{ route('admin/delete-events') }}"  --}}
                                                 method="POST">
                                                     @csrf
-                                                    <input type="hidden" name="id_events" value="{{ $ev->id_events }}">
+                                                    <input type="hidden" name="id_article" value="{{ $ev->id_article }}">
                                                     <div class="input-group mb-3">
                                                         <label for="question" class="form-label"
                                                             style="text-transform: uppercase">Are you sure want to delete
@@ -442,8 +442,8 @@
             });
 
             @foreach ($events_data as $Event)
-                $('#events_status-{{ $Event->id_events }}').select2({
-                    dropdownParent: $('#updateModal-{{ $Event->id_events }}')
+                $('#events_status-{{ $Event->id_article }}').select2({
+                    dropdownParent: $('#updateModal-{{ $Event->id_article }}')
                 });
             @endforeach
         });
@@ -456,7 +456,7 @@
 
         @foreach ($events_data as $ev)
             ClassicEditor
-                .create(document.querySelector('#events_desc_update-{{ $ev->id_events }}'))
+                .create(document.querySelector('#events_desc_update-{{ $ev->id_article }}'))
                 .catch(error => {
                     console.error(error);
                 });

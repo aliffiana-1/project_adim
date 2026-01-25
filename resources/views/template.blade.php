@@ -128,6 +128,8 @@
                         <?php $link = 'dashboard'; ?>
                         @elseif ($title == 'Article')
                         <?php $link = 'article'; ?>
+                        @elseif ($title == 'Article Center')
+                        <?php $link = 'article_editor'; ?>
                         @endif
                         <form class="d-flex" action="{{ route($link) }}" method="GET">
                             <input class="form-control me-2" type="search" placeholder="Search" name="search" value="{{ request('search') }}" placeholder="Type search keyword" aria-label="Search">
@@ -232,7 +234,8 @@
     @yield('article')
     <!-- Service End -->
     @endif
-    @if ($title == 'Article Editor')
+
+    @if ($title == 'Article Center')
     <!-- Service Start -->
     @yield('article_editor')
     <!-- Service End -->

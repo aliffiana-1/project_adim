@@ -100,4 +100,64 @@ class AuthorController extends BaseController
         // }
     }
 
+     public function store_article(Request $request)
+    {  
+        $data = new ArticleModel();
+        // $data->id_employee = $request->Session()->get('id_employee');
+        $data->events_title = $request->events_title;
+        $data->events_type = $request->events_type;
+        $data->events_date = $request->events_date;
+        $data->events_desc = $request->events_desc;
+        
+        $data->events_status = $request->events_status;
+        $data->events_softdel = 1;
+        $data->events_inserted_at = date('Y-m-d H:i:s');
+        $data->events_updated_at = date('Y-m-d H:i:s');
+
+        // if ($validator->fails()) {
+        //     \Session::put('error', 'Company name is required!');
+        //     return redirect()->back();
+        // } else {
+
+        $data->save();
+        if ($data) {
+            \Session::put('success', 'Add events Success!');
+            return redirect()->back();
+        } else {
+            \Session::put('error', 'Add events failed!');
+            return redirect()->back();
+        }
+        // }
+    }
+
+    public function edit_article(Request $request)
+    {
+        $data = ArticleModel::find($request->id_article);
+        // $data->id_employee = $request->Session()->get('id_employee');
+        $data->events_title = $request->events_title;
+        $data->events_desc = $request->events_desc;
+        $data->events_status = $request->events_status;
+        $data->events_type = $request->events_type;
+        if ($request->hasFile('events_img')) {
+            if ($data->events_img != null) {
+                unlink(public_path('events/' . $data->events_img));
+            }
+            $destination_path = 'events/';
+            $file_name = date('ymd') . '_';
+            $image = $request->file('events_img');
+            $name = $file_name . rand(1000, 9999) . $image->getClientOriginalName();
+            $image->move($destination_path, $name);
+            $data->events_img = $name;
+        }
+        $data->events_updated_at = date('Y-m-d H:i:s');
+        $data->save();
+        if ($data) {
+            \Session::put('success', 'Update evenst Success');
+            return redirect()->back();
+        } else {
+            \Session::put('error', 'Update events failed!');
+            return redirect()->back();
+        }
+    }
+
 }
