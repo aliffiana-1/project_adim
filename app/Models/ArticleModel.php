@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ArticleModel extends Model
+class ArticlesModel extends Model
 {
     use HasFactory;
-    protected $table = 'tb_events';
-    protected $primaryKey = 'id_events';
+    protected $table = 'tb_articles';
+    protected $primaryKey = 'id_article';
     public $timestamps = false;
 
     protected $fillable = [

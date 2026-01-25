@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class ArticleLevels extends Model
+class ArticleLevelsModel extends Model
 {
     use HasFactory;
     protected $table = 'tb_article_levels';
