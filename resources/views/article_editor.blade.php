@@ -47,13 +47,13 @@
                             <td colspan="2" style="text-align: center;">Action</td>
                         </tr>
                     </thead>
-                    <tbody class="text-uppercase">
-                        @if (!$events_data->isEmpty())
+                    <!-- <tbody class="text-uppercase">
+                        @if (!$article_data->isEmpty())
                             <?php $limit = isset($_GET['limit']) ? $_GET['limit'] : request('sortir');
                             $page = isset($_GET['page']) ? $_GET['page'] : 1;
                             
                             $no = $limit * $page - $limit; ?>
-                            @foreach ($events_data as $ev)
+                            @foreach ($article_data as $ev)
                                 <tr style="font-size:12px">
                                     <td>{{ ++$no }}</td>
                                     <td class="hideextra">{{ date('j F Y, H:i', strtotime($ev->events_inserted_at)) }}
@@ -259,7 +259,7 @@
                                 <td colspan="8" style="text-align: center"> No data </td>
                             </tr>
                         @endif
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
             <div class="row">
@@ -281,11 +281,11 @@
                 </div>
                 <div class="col d-flex flex-column" id="showing_page">
                     Showing
-                    {!! $events_data->firstItem() !!} to
-                    {!! $events_data->lastItem() !!} of {!! $events_data->total() !!} entries
+                    {!! $article_data->firstItem() !!} to
+                    {!! $article_data->lastItem() !!} of {!! $article_data->total() !!} entries
                 </div>
                 <div class="col-md-6 d-flex flex-column align-items-md-end" id="showing_page">
-                    {!! $events_data->appends(request()->all())->links() !!}
+                    {!! $article_data->appends(request()->all())->links() !!}
                 </div>
             </div>
         </div>
@@ -441,9 +441,9 @@
                 dropdownParent: $('#addModal')
             });
 
-            @foreach ($events_data as $Event)
-                $('#events_status-{{ $Event->id_article }}').select2({
-                    dropdownParent: $('#updateModal-{{ $Event->id_article }}')
+            @foreach ($article_data as $Event)
+                $('#events_status-{{ $Event->id_events }}').select2({
+                    dropdownParent: $('#updateModal-{{ $Event->id_events }}')
                 });
             @endforeach
         });
@@ -454,7 +454,7 @@
                 console.error(error);
             });
 
-        @foreach ($events_data as $ev)
+        @foreach ($article_data as $ev)
             ClassicEditor
                 .create(document.querySelector('#events_desc_update-{{ $ev->id_article }}'))
                 .catch(error => {

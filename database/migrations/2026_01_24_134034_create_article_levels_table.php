@@ -14,9 +14,8 @@ class CreateArticleLevelsTable extends Migration
     public function up()
     {
         Schema::create('article_levels', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id_article_level')->primary();
             $table->string('article_level_name')->unique();
-            $table->string('color')->nullable();
             $table->timestamps();
         });
     }
