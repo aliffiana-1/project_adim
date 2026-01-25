@@ -12,6 +12,7 @@ use App\Models\EventsModel;
 use App\Models\FooterModel;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Str;
 
 class AuthorController extends BaseController
 {
@@ -28,105 +29,97 @@ class AuthorController extends BaseController
         $id_alumni = $request->Session()->get('id_alumni');
         $user_role = $request->Session()->get('role');
         $id_alumni = $request->Session()->get('id_alumni');
-        $data_alumni = AlumniModel::where('id_alumni', $id_alumni)->first();
-        $data_footer = FooterModel::latest('footer_created_at')->first();
         $search = $request->search;
-        $data_events = EventsModel::where('events_status', 1)
-            ->where('events_softdel', 1)
-            ->where('events_type', 2)
-            ->orderBy('events_inserted_at', 'desc');
+        $data_articles = ArticlesModel::where('is_published', 1)
+            ->select('articles.*', 'categories.category_name', 'article_levels.article_level_name', 'articles.created_at as article_created_at')
+            ->join('categories', 'articles.id_category', '=', 'categories.id_category')
+            ->join('article_levels', 'articles.id_article_level', '=', 'article_levels.id_article_level')
+            ->orderBy('articles.id_article_level', 'asc')
+            ->orderBy('articles.created_at', 'desc');
 
         if ($search) {
-            $data_events->where('events_type', 2)->where('events_title', 'like', '%' . $search . '%')->where('events_softdel', 1)->where('events_status', 1)
-                ->orWhere('events_desc', 'like', '%' . $search . '%')->where('events_type', 2)->where('events_softdel', 1)->where('events_status', 1)
-                ->orWhere('events_date', 'like', '%' . $search . '%')->where('events_type', 2)->where('events_softdel', 1)->where('events_status', 1);
+            $data_articles->where('title', 'like', '%' . $search . '%')
+                ->orWhere('content', 'like', '%' . $search . '%')
+                ->orWhere('published_at', 'like', '%' . $search . '%');
         }
         return view('article', [
             'title' => 'Article',
-            'data_events' => $data_events->paginate(9),
-            'data_alumni' => $data_alumni,
+            'data_articles' => $data_articles->paginate(9),
             'user_role' => $user_role,
-            'data_footer' => $data_footer,
             'session' => $session
         ]);
     }
 
-     //events news
+    //events news
     public function article_editor(Request $request)
     {
         // if ($request->Session()->get('logged_in') == true && $request->Session()->get('role') == "admin") {
-            $session = true; // Skip login for testing
-            $user_role = 'admin'; // Set role to admin
-            $admin_name = 'Admin'; // Default name
-            // $data_footer = FooterModel::latest('footer_created_at')->first();
-            $search = $request->search;
-            $article_data = DB::table('articles')
+        $session = true; // Skip login for testing
+        $user_role = 'admin'; // Set role to admin
+        $admin_name = 'Admin'; // Default name
+        // $data_footer = FooterModel::latest('footer_created_at')->first();
+        $search = $request->search;
+        $article_data = DB::table('articles')
             ->join('categories', 'articles.id_category', '=', 'categories.id_category')
             ->join('article_levels', 'articles.id_article_level', '=', 'article_levels.id_article_level')
             ->select('articles.*', 'categories.category_name', 'article_levels.article_level_name')
             ->orderBy('articles.created_at', 'desc');
 
-            $sortir = 10;
+        $sortir = 10;
 
-            if ($request->sortir) {
-                $sortir = $request->sortir;
-            }
+        if ($request->sortir) {
+            $sortir = $request->sortir;
+        }
 
-            if ($search) {
-                $like = '%' . $search . '%';
-                $article_data->where(function ($q) use ($like) {
-                    $q->where('articles.title', 'like', $like)
+        if ($search) {
+            $like = '%' . $search . '%';
+            $article_data->where(function ($q) use ($like) {
+                $q->where('articles.title', 'like', $like)
                     ->orWhere('categories.category_name', 'like', $like)
                     ->orWhere('articles.content', 'like', $like);
-                });
+            });
 
-                $article_data->orderByRaw(
-                    "CASE WHEN articles.title LIKE ? THEN 0 WHEN categories.category_name LIKE ? THEN 1 WHEN articles.content LIKE ? THEN 2 ELSE 3 END",
-                    [$like, $like, $like])->orderBy('articles.created_at', 'desc');
-            }
-            return view('article_editor', [
-                'title' => 'Article Center',
-                'user_role' => $user_role,
-                'admin_name' => $admin_name,
-                'article_data' => $article_data->paginate($sortir),
-                // 'data_footer' => $data_footer,
-                'session' => $session,
-                'categories' => DB::table('categories')->get(),
-                'levels' => DB::table('article_levels')->get(),
-            ]);
+            $article_data->orderByRaw(
+                "CASE WHEN articles.title LIKE ? THEN 0 WHEN categories.category_name LIKE ? THEN 1 WHEN articles.content LIKE ? THEN 2 ELSE 3 END",
+                [$like, $like, $like]
+            )->orderBy('articles.created_at', 'desc');
+        }
+        return view('article_editor', [
+            'title' => 'Article Center',
+            'user_role' => $user_role,
+            'admin_name' => $admin_name,
+            'article_data' => $article_data->paginate($sortir),
+            'session' => $session,
+            'categories' => DB::table('categories')->get(),
+            'levels' => DB::table('article_levels')->get(),
+        ]);
         // } else {
         //     return redirect('/');
         // }
     }
 
-     public function store_article(Request $request)
-    {  
-        $data = new ArticleModel();
-        // $data->id_employee = $request->Session()->get('id_employee');
-        $data->events_title = $request->events_title;
-        $data->events_type = $request->events_type;
-        $data->events_date = $request->events_date;
-        $data->events_desc = $request->events_desc;
-        
-        $data->events_status = $request->events_status;
-        $data->events_softdel = 1;
-        $data->events_inserted_at = date('Y-m-d H:i:s');
-        $data->events_updated_at = date('Y-m-d H:i:s');
-
-        // if ($validator->fails()) {
-        //     \Session::put('error', 'Company name is required!');
-        //     return redirect()->back();
-        // } else {
+    public function store_article(Request $request)
+    {
+        $data = new ArticlesModel();
+        $data->id_user = 1; // Assuming a default user ID, adjust as needed
+        $data->id_category = $request->id_category;
+        $data->id_article_level = $request->id_article_level;
+        $data->title = $request->title;
+        $data->content = $request->content;
+        $data->is_published = $request->is_published;
+        $data->slug = Str::slug($request->title);
+        $data->published_at = $request->is_published == 1 ? now() : null;
+        $data->created_at = now();
+        $data->updated_at = now();
 
         $data->save();
         if ($data) {
-            \Session::put('success', 'Add events Success!');
+            \Session::put('success', 'Add article Success!');
             return redirect()->back();
         } else {
-            \Session::put('error', 'Add events failed!');
+            \Session::put('error', 'Add article failed!');
             return redirect()->back();
         }
-        // }
     }
 
     public function edit_article(Request $request)
@@ -159,4 +152,18 @@ class AuthorController extends BaseController
         }
     }
 
+    public function show_detail_article(Request $request, $id)
+    {
+        $article_detail = ArticlesModel::where('is_published', 1)
+            ->join('categories', 'articles.id_category', '=', 'categories.id_category')
+            ->join('article_levels', 'articles.id_article_level', '=', 'article_levels.id_article_level')
+            ->select('articles.*', 'categories.category_name', 'article_levels.article_level_name')
+            ->where('id_article', $id)
+            ->first();
+
+        return view('article_details', [
+            'title' => 'Article Details',
+            'article_detail' => $article_detail,
+        ]);
+    }
 }

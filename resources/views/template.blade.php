@@ -93,23 +93,9 @@
                         <li class="nav-item">
                             <a class="nav-link {{ $title == 'Dashboard' ? 'active' : '' }}" style="font-size: 14px;" aria-current="page" href="{{ route('dashboard') }}">Home</a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ $title == 'Find Job' || $title == 'Detail Job' ? 'active' : '' }}"
-                        style="font-size: 14px;"
-                        href="{{ route('findjob') }}"
-                        >Find Jobs</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ $title == 'Webinar' || $title == 'Webinar Details' ? 'active' : '' }}" style="font-size: 14px;" href="{{ route('webinar') }}">Webinar / Seminar</a>
-                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link {{ $title == 'Article' || $title == 'News Details' ? 'active' : '' }}" style="font-size: 14px;" href="{{ route('article') }}">Article</a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ $title == 'Tracer Study' ? 'active' : '' }}" style="font-size: 14px;"
-                        href="{{ route('tracer-study') }}"
-                        >Tracer Study</a>
-                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link {{ $title == 'About Us' ? 'active' : '' }}" style="font-size: 14px;" {{-- href="{{ route('aboutus') }}" --}}>About Us</a>
                         </li>
@@ -130,49 +116,57 @@
                         <?php $link = 'article'; ?>
                         @elseif ($title == 'Article Center')
                         <?php $link = 'article_editor'; ?>
+                        @elseif ($title == 'Article Details')
+                        <?php $link = 'article_editor'; ?>
                         @endif
-                        <form class="d-flex" action="{{ route($link) }}" method="GET">
-                            <input class="form-control me-2" type="search" placeholder="Search" name="search" value="{{ request('search') }}" placeholder="Type search keyword" aria-label="Search">
-                            <button class="btn" style="background-color: maroon; border: none; color: white;" type="submit">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </form>
+
+                        <div class="d-flex">
+                            <a href="{{ route('login') }}" class="btn btn-dark ms-3">
+                        <i class="fa fa-user me-2"></i>
+                        Login
+                        </a>
+                        {{-- <form class="d-flex" action="{{ route($link) }}" method="GET">
+                        <input class="form-control me-2" type="search" placeholder="Search" name="search" value="{{ request('search') }}" placeholder="Type search keyword" aria-label="Search">
+                        <button class="btn" style="background-color: maroon; border: none; color: white;" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        </form> --}}
                         {{-- @if ($session == false)
                         <div class="d-flex">
                             <a href="{{ route('login') }}" class="btn btn-dark ms-3">
-                                <i class="fa fa-user me-2"></i>
-                                Login
-                            </a>
-                        </div>
-                        @else
-                        <div class="dropdown">
-                            @if ($user_role == 'alumni')
-                            <div style="padding-left:20px; padding-right:80px; padding-top:5px;">
-                                <a href="{{ route('alumni/dashboard') }}" class="btn btn-dark ">
-                                    <i class="fas fa-user" style="padding-right: 5px;"></i>
-                                    Back to Alumni</a>
-                            </div>
-                            @elseif($user_role == 'admin')
-                            <div style="padding-left:20px; padding-right:80px; padding-top:5px;">
-                                <a href="{{ route('admin/dashboard') }}" class="btn btn-dark ">
-                                    <i class="fas fa-user-cog" style="padding-right: 5px;"></i>
-                                    Back to Admin</a>
-                            </div>
-                            @endif --}}
-                        </div>
-                        {{-- @endif --}}
+                        <i class="fa fa-user me-2"></i>
+                        Login
+                        </a>
                     </div>
-                    @endif
+                    @else
+                    <div class="dropdown">
+                        @if ($user_role == 'alumni')
+                        <div style="padding-left:20px; padding-right:80px; padding-top:5px;">
+                            <a href="{{ route('alumni/dashboard') }}" class="btn btn-dark ">
+                                <i class="fas fa-user" style="padding-right: 5px;"></i>
+                                Back to Alumni</a>
+                        </div>
+                        @elseif($user_role == 'admin')
+                        <div style="padding-left:20px; padding-right:80px; padding-top:5px;">
+                            <a href="{{ route('admin/dashboard') }}" class="btn btn-dark ">
+                                <i class="fas fa-user-cog" style="padding-right: 5px;"></i>
+                                Back to Admin</a>
+                        </div>
+                        @endif --}}
+                    </div>
+                    {{-- @endif --}}
                 </div>
+                @endif
             </div>
-        </nav>
+    </div>
+    </nav>
     </div>
 
     @if ($title == 'Dashboard')
     <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="w-100 responsive" src="{{ asset('assets/image/jic/CDC-Seminar.png') }}" style="object-fit: cover; height: 710px;" alt="Image" />
+                <img class="w-100 responsive" src="{{ asset('assets/image/bpjs/CDC-Seminar.png') }}" style="object-fit: cover; height: 710px;" alt="Image" />
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 900px">
                         <h5 class="text-white text-uppercase mb-3 animated slideInDown">
@@ -185,7 +179,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img class="w-100 responsive" src="{{ asset('assets/image/jic/CDC-Entrepreneurship.png') }}" style="object-fit: cover; height: 710px;" alt="Image" />
+                <img class="w-100 responsive" src="{{ asset('assets/image/bpjs/CDC-Entrepreneurship.png') }}" style="object-fit: cover; height: 710px;" alt="Image" />
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 900px">
                         <h5 class="text-white text-uppercase mb-3 animated slideInDown">
@@ -198,7 +192,7 @@
                 </div>
             </div>
             {{-- <div class="carousel-item">
-                    <img class="w-100 responsive" src="{{ asset('assets/image/jic/stie3.JPG') }}"
+                    <img class="w-100 responsive" src="{{ asset('assets/image/bpjs/.JPG') }}"
             style="object-fit: cover; height: 710px;" alt="Image" />
             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                 <div class="p-3" style="max-width: 900px">
@@ -241,59 +235,18 @@
     <!-- Service End -->
     @endif
 
-    @if ($title == 'Tracer Study')
-    <!-- Service Start -->
-    @yield('tracer-study')
-    <!-- Service End -->
-    @endif
-
     @if ($title == 'About Us')
     <!-- Service Start -->
     @yield('aboutus')
     <!-- Service End -->
     @endif
 
-    @if ($title == 'Find Job')
-    <!-- Find Jobs Start -->
-    @yield('find-job')
-    <!-- Find Jobs End -->
-    @endif
-
-    @if ($title == 'Webinar')
+    @if ($title == 'Article Details')
     <!-- Webinar Start -->
-    @yield('webinar')
+    @yield('article-details')
     <!-- Webinar End -->
     @endif
 
-    @if ($title == 'Webinar Details')
-    <!-- Webinar Start -->
-    @yield('webinar-details')
-    <!-- Webinar End -->
-    @endif
-
-    @if ($title == 'News Details')
-    <!-- Webinar Start -->
-    @yield('news-details')
-    <!-- Webinar End -->
-    @endif
-
-    @if ($title == 'News')
-    <!-- News Start -->
-    @yield('news')
-    <!-- News End -->
-    @endif
-
-    @if ($title == 'Detail Job')
-    <!-- Detail Find Jobs Start -->
-    @yield('job-details')
-    <!-- Detail Find Jobs End -->
-    @endif
-
-    {{-- @if ($title == 'Form Pengguna')
-        <!-- Find Jobs Start -->
-        @yield('form-pengguna')
-        <!-- Find Jobs End -->
-    @endif --}}
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light mt-5 uk-animation-fade">

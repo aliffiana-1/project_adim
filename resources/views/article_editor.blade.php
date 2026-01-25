@@ -226,7 +226,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form 
-                                                {{-- action="{{ route('admin/delete-article') }}"  --}}
+                                                action="{{ route('delete_article') }}"
                                                 method="POST">
                                                     @csrf
                                                     <input type="hidden" name="id_article" value="{{ $data->id_article }}">
@@ -294,7 +294,7 @@
                 </div>
                 <div class="modal-body">
                     <form 
-                    {{-- action="{{ route('admin/store-article') }}"  --}}
+                    action="{{ route('store_article') }}" 
                     method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-floating mb-2">
