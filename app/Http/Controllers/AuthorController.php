@@ -12,6 +12,7 @@ use App\Models\EventsModel;
 use App\Models\FooterModel;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Str;
 
 class AuthorController extends BaseController
 {
@@ -130,33 +131,34 @@ class AuthorController extends BaseController
     }
 
     public function edit_article(Request $request)
-    {
-        $data = ArticleModel::find($request->id_article);
-        // $data->id_employee = $request->Session()->get('id_employee');
-        $data->events_title = $request->events_title;
-        $data->events_desc = $request->events_desc;
-        $data->events_status = $request->events_status;
-        $data->events_type = $request->events_type;
-        if ($request->hasFile('events_img')) {
-            if ($data->events_img != null) {
-                unlink(public_path('events/' . $data->events_img));
-            }
-            $destination_path = 'events/';
-            $file_name = date('ymd') . '_';
-            $image = $request->file('events_img');
-            $name = $file_name . rand(1000, 9999) . $image->getClientOriginalName();
-            $image->move($destination_path, $name);
-            $data->events_img = $name;
-        }
-        $data->events_updated_at = date('Y-m-d H:i:s');
-        $data->save();
-        if ($data) {
-            \Session::put('success', 'Update evenst Success');
-            return redirect()->back();
-        } else {
-            \Session::put('error', 'Update events failed!');
-            return redirect()->back();
-        }
+{
+    $data = ArticlesModel::find($request->id_article);
+
+    if (!$data) {
+        \Session::put('error', 'Article not found!');
+        return redirect()->back();
     }
+
+    $data->title = $request->title;
+    $data->content = $request->content;
+    $data->id_category = $request->id_category;
+    $data->id_article_level = $request->id_article_level;
+    $data->is_published = $request->is_published;
+    $data->slug = \Str::slug($request->title);
+    if ($request->is_published == 1 && empty($data->published_at)) {
+        $data->published_at = now();
+    }
+
+    $data->updated_at = now();
+
+    if ($data->save()) {
+        \Session::put('success', 'Update article success!');
+    } else {
+        \Session::put('error', 'Update article failed!');
+    }
+
+    return redirect()->back();
+}
+
 
 }

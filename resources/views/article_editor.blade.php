@@ -142,74 +142,69 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{ route('edit_article') }}" method="POST"
-                                                    enctype="multipart/form-data">
+                                                <form action="{{ route('edit_article') }}" method="POST">
                                                     @csrf
-
-                                                    <input type="hidden" required name="id_article" value="{{ $data->id_article }}">
-
+                                                    <input type="hidden" name="id_article" value="{{ $data->id_article }}">
 
                                                     <div class="mb-3">
-                                                        <label for="title" class="form-label">Input New
-                                                            Title</label>
-                                                        <input required value="{{ $data->title }}" class="form-control"
-                                                            type="text" name="title">
+                                                        <label class="form-label">Title</label>
+                                                        <input required type="text" name="title" class="form-control"
+                                                            value="{{ $data->title }}">
                                                     </div>
-                                                    
+
                                                     <div class="mb-3">
-                                                        <label for="content" class="form-label">Input New
-                                                            Description</label>
-                                                        <textarea required class="form-control" name="content" id="content_update-{{ $data->id_article }}">{!! $data->content !!}</textarea>
+                                                        <label class="form-label">Content</label>
+                                                        <textarea required class="form-control"
+                                                                name="content"
+                                                                id="content_update-{{ $data->id_article }}">{{ $data->content }}</textarea>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="is_published">Publish</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input required class="form-check-input" value="1" type="radio"
-                                                            name="is_published" id="flexRadioDefault1"
-                                                            {{ $data->is_published == 1 ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="flexRadioDefault1">
-                                                            Yes
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" value="2" type="radio"
-                                                            required
-                                                            name="is_published" id="flexRadioDefault2"
-                                                            {{ $data->is_published == 2 ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="flexRadioDefault2">
-                                                            No
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="id_category">Change Category</label>
-                                                    </div>
+
                                                     <div class="mb-3">
-                                                        <select class="form-control" name="id_category" id="id_category" required>
+                                                        <label class="form-label">Category</label>
+                                                        <select class="form-control" name="id_category" required>
                                                             <option value="">Choose Category</option>
                                                             @foreach ($categories as $key)
-                                                                <option value="{{ $key->id_category }}" {{ $data->id_category == $key->id_category ? 'selected' : '' }}>{{ $key->category_name }}</option>
+                                                                <option value="{{ $key->id_category }}"
+                                                                    {{ $data->id_category == $key->id_category ? 'selected' : '' }}>
+                                                                    {{ $key->category_name }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="id_article_level">Change Level</label>
-                                                    </div>
+
                                                     <div class="mb-3">
-                                                        <select class="form-control" name="id_article_level" id="id_article_level" required>
+                                                        <label class="form-label">Level</label>
+                                                        <select class="form-control" name="id_article_level" required>
                                                             <option value="">Choose Level</option>
                                                             @foreach ($levels as $key)
-                                                                <option value="{{ $key->id_article_level }}" {{ $data->id_article_level == $key->id_article_level ? 'selected' : '' }}>{{ $key->article_level_name }}</option>
+                                                                <option value="{{ $key->id_article_level }}"
+                                                                    {{ $data->id_article_level == $key->id_article_level ? 'selected' : '' }}>
+                                                                    {{ $key->article_level_name }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                            </div>
-                                            </form>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Publish</label>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="is_published" value="1"
+                                                                {{ $data->is_published == 1 ? 'checked' : '' }}>
+                                                            <label class="form-check-label">Yes</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="is_published" value="2"
+                                                                {{ $data->is_published == 2 ? 'checked' : '' }}>
+                                                            <label class="form-check-label">No</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </form>
+
                                         </div>
                                     </div>
                                 </div>

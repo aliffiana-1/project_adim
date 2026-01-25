@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ArticleLevelsModel extends Model
 {
     use HasFactory;
-    protected $table = 'tb_article_levels';
+    protected $table = 'article_levels';
     protected $primaryKey = 'id_article_level';
     public $timestamps = false;
 
