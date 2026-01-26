@@ -101,25 +101,25 @@
                         </li>
                     </ul>
                     @if ($title != 'Form Pengguna')
-                    <div class="d-flex">
-                        @elseif ($title == 'Dashboard' || $title == 'About Us')
-                        <?php $link = 'dashboard'; ?>
-                        @elseif ($title == 'Article')
-                        <?php $link = 'article'; ?>
-                        @elseif ($title == 'Article Center')
-                        <?php $link = 'article_editor'; ?>
-                        @elseif ($title == 'Article Details')
-                        <?php $link = 'article_editor'; ?>
-                        @endif
-
                         <div class="d-flex">
-                            <a href="{{ route('login') }}" class="btn btn-dark ms-3">
-                                <i class="fa fa-user me-2"></i>
-                                Login
-                            </a>
+                            @elseif ($title == 'Dashboard' || $title == 'About Us')
+                            <?php $link = 'dashboard'; ?>
+                            @elseif ($title == 'Article')
+                            <?php $link = 'article'; ?>
+                            @elseif ($title == 'Article Center')
+                            <?php $link = 'article_editor'; ?>
+                            @elseif ($title == 'Article Details')
+                            <?php $link = 'article_details'; ?>
+                            @endif
+
+                            <div class="d-flex">
+                                <a href="{{ route('login') }}" class="btn btn-dark ms-3">
+                                    <i class="fa fa-user me-2"></i>
+                                    Login
+                                </a>
+                            </div>
                         </div>
-                        @endif
-                    </div>
+
                 </div>
         </nav>
     </div>
@@ -148,7 +148,7 @@
                             BPJS
                         </h5>
                         <h3 class="display-1 text-white mb-md-4 animated zoomIn">
-                            
+
                         </h3>
                     </div>
                 </div>
