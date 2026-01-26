@@ -94,32 +94,31 @@
                             <a class="nav-link {{ $title == 'Dashboard' ? 'active' : '' }}" style="font-size: 14px;" aria-current="page" href="{{ route('dashboard') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ $title == 'Article' || $title == 'News Details' ? 'active' : '' }}" style="font-size: 14px;" href="{{ route('article') }}">Article</a>
+                            <a class="nav-link {{ $title == 'Article' ? 'active' : '' }}" style="font-size: 14px;" href="{{ route('article') }}">Article</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ $title == 'About Us' ? 'active' : '' }}" style="font-size: 14px;" {{-- href="{{ route('aboutus') }}" --}}>About Us</a>
                         </li>
                     </ul>
-                    @if ($title != 'Form Pengguna')
+                    @if ($title != '')
+                    <div class="d-flex">
+                        @elseif ($title == 'Dashboard' || $title == 'About Us')
+                        <?php $link = 'dashboard'; ?>
+                        @elseif ($title == 'Article')
+                        <?php $link = 'article'; ?>
+                        @elseif ($title == 'Article Center')
+                        <?php $link = 'article_editor'; ?>
+                        @elseif ($title == 'Article Details')
+                        <?php $link = 'article_details'; ?>
+                        @endif
+
                         <div class="d-flex">
-                            @elseif ($title == 'Dashboard' || $title == 'About Us')
-                            <?php $link = 'dashboard'; ?>
-                            @elseif ($title == 'Article')
-                            <?php $link = 'article'; ?>
-                            @elseif ($title == 'Article Center')
-                            <?php $link = 'article_editor'; ?>
-                            @elseif ($title == 'Article Details')
-                            <?php $link = 'article_details'; ?>
-                            @endif
-
-                            <div class="d-flex">
-                                <a href="{{ route('login') }}" class="btn btn-dark ms-3">
-                                    <i class="fa fa-user me-2"></i>
-                                    Login
-                                </a>
-                            </div>
+                            <a href="{{ route('login') }}" class="btn btn-dark ms-3">
+                                <i class="fa fa-user me-2"></i>
+                                Login
+                            </a>
                         </div>
-
+                    </div>
                 </div>
         </nav>
     </div>
@@ -153,20 +152,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="carousel-item">
-                    <img class="w-100 responsive" src="{{ asset('assets/image/bpjs/.JPG') }}"
-            style="object-fit: cover; height: 710px;" alt="Image" />
-            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                <div class="p-3" style="max-width: 900px">
-                    <h5 class="text-white text-uppercase mb-3 animated slideInDown">
-                        BPJS
-                    </h5>
-                    <h3 class="display-1 text-white mb-md-4 animated zoomIn">
-                        WISUDA
-                    </h3>
-                </div>
-            </div>
-        </div> --}}
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
