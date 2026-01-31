@@ -66,6 +66,37 @@
             height: 100vh;
         }
 
+        body {
+            overflow-x: hidden;
+        }
+
+        .dropdown-menu {
+            max-width: 240px;
+            overflow-x: hidden;
+        }
+
+        .dropdown-menu-end {
+            right: 0 !important;
+            left: auto !important;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            inset: auto 0 auto auto !important;
+            transform: translateX(-10px) !important;
+        }
+
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden !important;
+        }
+
+
+
         /* .responsive {
                     width: 100%;
                     max-width: auto;
@@ -82,8 +113,6 @@
         <nav class="navbar navbar-expand-lg navbar-dark" style="background: #ffffff">
             <div class="container-fluid">
                 <a class="navbar-brand">
-                    {{-- LOGO --}}
-                    {{-- <img src="" width="220px"> --}}
                 </a>
                 <button class="navbar-toggler" style="background-color: maroon" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -99,6 +128,33 @@
                         <li class="nav-item">
                             <a class="nav-link {{ $title == 'About Us' ? 'active' : '' }}" style="font-size: 14px;" {{-- href="{{ route('aboutus') }}" --}}>About Us</a>
                         </li>
+
+                        {{-- MENU KHUSUS LOGIN --}}
+                        @if(session('is_login'))
+
+                        {{-- PENULIS --}}
+                        @if(session('role_name') == 'author')
+                        <li class="nav-item">
+                            <a style="font-size: 14px;" class="nav-link {{ $title == 'Article Center' ? 'active' : '' }}" href="{{ route('article_editor') }}">Article Center</a>
+                        </li>
+                        @endif
+
+                        {{-- ADMIN --}}
+                        @if(session('role_name') == 'admin')
+                        <li class="nav-item">
+                            <a style="font-size: 14px;" class="nav-link {{ $title == 'Article Center' ? 'active' : '' }}" href="{{ route('article_editor') }}">Article Center</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="font-size: 14px;" class="nav-link {{ $title == 'Level' ? 'active' : '' }}" href="{{ route('level_editor') }}">Level Center</a>
+                        </li>
+                        <li class="nav-item">
+                            {{-- <a style="font-size: 14px;" class="nav-link {{ $title == 'Category' ? 'active' : '' }}" href="{{ route('category_editor') }}">Category</a> --}}
+                        </li>
+                        <li class="nav-item">
+                            <a style="font-size: 14px;" class="nav-link {{ $title == 'User' ? 'active' : '' }}" href="{{ route('user_editor') }}">User Center</a>
+                        </li>
+                        @endif
+                        @endif
                     </ul>
                     @if ($title != '')
                     <div class="d-flex">
@@ -112,12 +168,50 @@
                         <?php $link = 'article_details'; ?>
                         @endif
 
-                        <div class="d-flex">
+                        <div class="d-flex align-items-center">
+
+                            @if(session('is_login'))
+
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                    <i class="fa fa-user-circle fa-lg"></i>
+                                </button>
+
+
+                                <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width:220px">
+
+                                    <li class="px-3 py-2">
+                                        <div class="fw-bold">{{ session('full_name') }}</div>
+                                        <div class="text-muted" style="font-size:12px;">
+                                            {{ session('role_name') ?? 'User' }}
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="{{ route('logout') }}">
+                                            <i class="fa fa-sign-out-alt me-2"></i> Log Out
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                            @else
+
                             <a href="{{ route('login') }}" class="btn btn-dark ms-3">
                                 <i class="fa fa-user me-2"></i>
                                 Login
                             </a>
+
+                            @endif
                         </div>
+
                     </div>
                 </div>
         </nav>
@@ -152,15 +246,15 @@
                     </div>
                 </div>
             </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
     @endif
     <!-- Navbar & Carousel End -->
@@ -192,6 +286,14 @@
     <!-- Webinar Start -->
     @yield('article-details')
     <!-- Webinar End -->
+    @endif
+
+    @if ($title == 'Level')
+    @yield('level_editor')
+    @endif
+
+    @if ($title == 'User')
+    @yield('user_editor')
     @endif
 
 
@@ -238,7 +340,7 @@
                                     </i>infobpjs@bpjs.ac.id
                                 </a>
                                 <a style="text-decoration:none" class="text-light mt-3" target="_blank" href="https://maps.google.com/?q=Jl. Letjen Suprapto Kav. 20 No.14
-Jakarta Pusat 10510, Telp. 021 421 2938"><i class="fas fa-map-marker-alt "></i> Jl. Letjen Suprapto Kav. 20 No.14
+    Jakarta Pusat 10510, Telp. 021 421 2938"><i class="fas fa-map-marker-alt "></i> Jl. Letjen Suprapto Kav. 20 No.14
                                     Jakarta Pusat 10510, Telp. 021 421 2938
                                 </a>
                             </div>
@@ -265,89 +367,24 @@ Jakarta Pusat 10510, Telp. 021 421 2938"><i class="fas fa-map-marker-alt "></i> 
     </div>
     <!-- Footer End -->
 
-    <div class="modal fade" id="Login" aria-hidden="true" aria-labelledby="exampleModalToggleLabel">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="p-3">
-                        <form method="POST" {{-- action="{{ route('check-login') }}" --}}>
-                            @csrf
-                            @csrf
-                            @if (\Session::has('error'))
-                            <?php $msg = Session::get('error'); ?>
-                            <div style="margin-bottom: 10px">
-                                <span style="font-weight: bold; color: white; background-color: maroon;padding: 5px">
-                                    {{ $msg }} </span>
-                            </div>
-                            @php \Session::forget('success') @endphp
-                            @php \Session::forget('error') @endphp
-                            @endif
-                            <div class="text-center mb-3">
-                                <h4 class="mb-4">LOGIN TO YOUR ACCOUNT</h4>
-                                <div class="form-outline mb-4">
-                                    <label class="form-label" for="loginName">Email</label>
-                                    <input type="text" id="loginName" name="username" class="form-control" placeholder="Input Your Email" required />
-                                </div>
-                                <div class="form-outline mb-4">
-                                    <label class="form-label" for="loginPassword">Password</label>
-                                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Input Your Password" required />
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-                                <div class="text-center">
-                                    <p>Don't have an alumni account yet? <a {{-- href="{{ route('alumni/register') }}" --}} style="color: rgb(43, 0, 255)">Register</a></p>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-target="#Log" data-bs-toggle="modal" data-bs-dismiss="modal">Open second modal</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="Log" aria-hidden="true" aria-labelledby="exampleModalToggleLabel">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="p-3">
-                        <form method="POST" {{-- action="{{ route('check-login') }}" --}}>
-                            @csrf
-                            @csrf
-                            @if (\Session::has('error'))
-                            <?php $msg = Session::get('error'); ?>
-                            <div style="margin-bottom: 10px">
-                                <span style="font-weight: bold; color: white; background-color: maroon;padding: 5px">
-                                    {{ $msg }} </span>
-                            </div>
-                            @php \Session::forget('success') @endphp
-                            @php \Session::forget('error') @endphp
-                            @endif
-                            <div class="text-center mb-3">
-                                <h4 class="mb-4">LOGIN TO YOUR ACCOUNT</h4>
-                                <div class="form-outline mb-4">
-                                    <label class="form-label" for="loginName">Email</label>
-                                    <input type="text" id="loginName" name="username" class="form-control" placeholder="Input Your Email" required />
-                                </div>
-                                <div class="form-outline mb-4">
-                                    <label class="form-label" for="loginPassword">Password</label>
-                                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Input Your Password" required />
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-                                <div class="text-center">
-                                    <p>Don't have an alumni account yet? <a {{-- href="{{ route('alumni/register') }}" --}} style="color: rgb(43, 0, 255)">Register</a></p>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        document.addEventListener('shown.bs.dropdown', function(e) {
+            const menu = e.target.querySelector('.dropdown-menu');
+            if (!menu) return;
+
+            const rect = menu.getBoundingClientRect();
+            const overflowRight = rect.right - window.innerWidth;
+
+            if (overflowRight > 0) {
+                menu.style.transform = `translateX(-${overflowRight + 10}px)`;
+            } else {
+                menu.style.transform = '';
+            }
+        });
+
+    </script>
+
+
 </body>
 <!-- UI KIT -->
 {{-- <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.10/dist/js/uikit.min.js"></script>

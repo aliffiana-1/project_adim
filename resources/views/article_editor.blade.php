@@ -15,11 +15,16 @@
             <h1 class="mb-0">Article Center</h1>
         </div>
         <div class="row gy-3">
+
             <div class="col-md-9">
+                @if (session('role_name') != 'admin')
                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addModal" onclick="show_modal_add()">
                     <span class="fa fa-plus"></span> Add New
                 </button>
+                @endif
             </div>
+
+
             <div class="col-md-3">
                 <form method="GET" id="search_form">
                     <div class="input-group mb-3">
@@ -73,50 +78,13 @@
                         <td style="text-align: center;">
                             <a style="text-decoration: none" class="fa fa-edit text-warning" title="Update" data-bs-toggle="modal" data-bs-target="#EditModal-{{ $data->id_article }}" href="#EditModal-{{ $data->id_article }}"></a>
                         </td>
-                        {{-- <td style="text-align: center;">
-                                    <a style="text-decoration: none" class="fa fa-edit text-info" title="Edit"
-                                        data-bs-toggle="modal" data-bs-target="#updateModal-{{ $data->id_article }}"
-                        href="#updateModal-{{ $data->id_article }}"></a>
-                        </td> --}}
                         <td style="text-align: center;">
                             <a style="text-decoration: none" class="far fa-trash-alt  text-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $data->id_article }}" href="#deleteModal-{{ $data->id_article }}"></a>
                         </td>
                     </tr>
-
-                    <div class="modal fade" id="updateModal-{{ $data->id_article }}" tabindex="-1" role="dialog" aria-labelledby="addModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addModalLongTitle">Publish Article</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form {{-- action="{{ route('admin/update-article') }}" --}} method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id_article" value="{{ $data->id_article }}">
-                                        <div class="mb-3">
-                                            <label for="is_published" class="form-label"></label>
-                                            <select class="form-control" name="is_published" id="is_published-{{ $data->id_article }}" style="width: 100%">
-                                                <option> --- Choose --- </option>
-                                                @if ($data->is_published != 1)
-                                                <option value="1">Publish</option>
-                                                @endif
-                                                @if ($data->is_published != 2)
-                                                <option value="2">Unpublish</option>
-                                                @endif
-                                                {{-- pending = 0, publish = 1, unpublish = 2 --}}
-                                            </select>
-                                        </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    @php
+                    $isAdmin = session('role_name') == 'admin';
+                    @endphp
 
 
                     <div class="modal fade" id="EditModal-{{ $data->id_article }}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -133,12 +101,12 @@
                                         <input type="hidden" name="id_article" value="{{ $data->id_article }}">
 
                                         <div class="form-floating mb-2">
-                                            <input type="text" name="title" class="form-control" value="{{ $data->title }}" required>
+                                            <input type="text" name="title" class="form-control" value="{{ $data->title }}" {{ $isAdmin ? 'readonly' : '' }} required>
                                             <label>Title</label>
                                         </div>
 
                                         <div class="form-floating mb-2">
-                                            <select name="id_category" class="form-control select2-search" style="width: 100%" required>
+                                            <select name="id_category" class="form-control select2-search" style="width: 100%" {{ $isAdmin ? 'disabled' : '' }} required>
                                                 <option value=""> Select Category </option>
                                                 @foreach ($categories as $key)
                                                 <option value="{{ $key->id_category }}" {{ $data->id_category == $key->id_category ? 'selected' : '' }}>
@@ -150,7 +118,7 @@
                                         </div>
 
                                         <div class="form-floating mb-2">
-                                            <select name="id_article_level" class="form-control select2-search" style="width: 100%" required>
+                                            <select name="id_article_level" class="form-control select2-search" style="width: 100%" {{ $isAdmin ? 'disabled' : '' }} required>
                                                 <option value=""> Select Level </option>
                                                 @foreach ($levels as $key)
                                                 <option value="{{ $key->id_article_level }}" {{ $data->id_article_level == $key->id_article_level ? 'selected' : '' }}>
@@ -163,9 +131,10 @@
 
                                         <div class="form-group mb-2">
                                             <label>Description</label>
-                                            <textarea class="form-control" name="content" id="content_update-{{ $data->id_article }}" rows="3">{{ $data->content }}</textarea>
+                                            <textarea class="form-control" name="content" id="content_update-{{ $data->id_article }}" rows="3" {{ $isAdmin ? 'readonly' : '' }}>{{ $data->content }}</textarea>
                                         </div>
 
+                                        @if(session('role_name') == 'admin')
                                         <div class="form-group">
                                             <label>Publish</label>
                                         </div>
@@ -177,6 +146,10 @@
                                             <input class="form-check-input" value="2" type="radio" name="is_published" {{ $data->is_published == 2 ? 'checked' : '' }} required>
                                             <label class="form-check-label">No</label>
                                         </div>
+                                        @else
+                                        <input type="hidden" name="is_published" value="{{ $data->is_published }}">
+                                        @endif
+
 
                                         <div class="modal-footer mt-3">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -291,21 +264,22 @@
                         <textarea class="form-control" name="content" id="content" rows="3"></textarea>
                     </div>
 
+                    @if(session('role_name') == 'admin')
                     <div class="form-group">
                         <label for="is_published">Publish</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" value="1" type="radio" name="is_published" id="flexRadioDefault1" required>
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            Yes
-                        </label>
+                        <input class="form-check-input" value="1" type="radio" name="is_published" required>
+                        <label class="form-check-label">Yes</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" required value="2" type="radio" name="is_published" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                            No
-                        </label>
+                        <input class="form-check-input" value="2" type="radio" name="is_published" required>
+                        <label class="form-check-label">No</label>
                     </div>
+                    @else
+                    <input type="hidden" name="is_published" value="0"> {{-- default pending --}}
+                    @endif
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -116,38 +116,48 @@
                                 </div>
                             </div>
                             @endif
-                            <form id="formAuthentication" class="mb-3" action="{{ route('check-user') }}" method="POST">
+                            <form action="{{ route('register_store') }}" method="POST">
                                 @csrf
+
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email or Username</label>
-                                    <input type="text" class="form-control" id="email" name="username" placeholder="Enter your email or username" autofocus />
+                                    <label>Username</label>
+                                    <input type="text" name="name" class="form-control" required>
                                 </div>
 
-                                <div class="mb-3 form-password-toggle">
-                                    <div class="d-flex justify-content-between">
-                                        <label class="form-label" for="password">Password</label>
-                                        <a href="auth-forgot-password-basic.html" class="text-muted">
-                                            <small>Forgot Password?</small>
-                                        </a>
-                                    </div>
-                                    <div class="input-group input-group-merge">
-                                        <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password" oninput="hiddenscript()" aria-describedby="password" required />
-                                        <span class="input-group-text cursor-pointer">
-                                            <a class="purple-head hover-black wrapper" class="eyeicon" id="myBtn">
-                                                <i class="fas fa-eye" id="eye" onclick="Showfunction()"></i>
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
                                 <div class="mb-3">
-                                    <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                                    <label>Full Name</label>
+                                    <input type="text" name="full_name" class="form-control" required>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label>NIP</label>
+                                    <input type="text" name="nip" class="form-control" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Email</label>
+                                    <input type="email" name="email" class="form-control" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Password</label>
+                                    <input type="password" name="password" class="form-control" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Confirm Password</label>
+                                    <input type="password" name="password_confirmation" class="form-control" required>
+                                </div>
+
+                                <button class="btn btn-primary w-100">Register</button>
+
                                 <div class="text-center mt-3">
-                            Belum punya akun? <a href="{{ route('register') }}">Register</a>
-                        </div>
+                                    Sudah punya akun? <a href="{{ route('login') }}">Login</a>
+                                </div>
                             </form>
+
                         </div>
-                        
+
 
                     </div>
                 </div>

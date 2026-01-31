@@ -8,8 +8,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use App\Models\ArticlesModel;
-use App\Models\EventsModel;
-use App\Models\FooterModel;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Str;
@@ -48,10 +46,13 @@ class AuthorController extends BaseController
         ]);
     }
 
-    //events news
     public function article_editor(Request $request)
     {
-        $session = true; 
+        if (!session('is_login')) {
+            abort(403);
+        }
+
+        $session = true;
         $user_role = 'admin';
         $admin_name = 'Admin';
         $search = $request->search;
@@ -60,6 +61,10 @@ class AuthorController extends BaseController
             ->join('article_levels', 'articles.id_article_level', '=', 'article_levels.id_article_level')
             ->select('articles.*', 'categories.category_name', 'article_levels.article_level_name')
             ->orderBy('articles.created_at', 'desc');
+
+        if (session('role_name') == 'author') {
+            $article_data->where('articles.id_user', session('id_user'));
+        }
 
         $sortir = 10;
 
@@ -94,7 +99,7 @@ class AuthorController extends BaseController
     public function store_article(Request $request)
     {
         $data = new ArticlesModel();
-        $data->id_user = 1; 
+        $data->id_user = session('id_user');
         $data->id_category = $request->id_category;
         $data->id_article_level = $request->id_article_level;
         $data->title = $request->title;
@@ -115,7 +120,8 @@ class AuthorController extends BaseController
         }
     }
 
-    public function edit_article(Request $request){
+    public function edit_article(Request $request)
+    {
         $data = ArticlesModel::find($request->id_article);
 
         if (!$data) {
@@ -144,7 +150,8 @@ class AuthorController extends BaseController
         return redirect()->back();
     }
 
-    public function delete_article(Request $request){
+    public function delete_article(Request $request)
+    {
         $data = ArticlesModel::find($request->id_article);
 
         if (!$data) {
