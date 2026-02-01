@@ -38,10 +38,15 @@ class AuthorController extends BaseController
                 ->orWhere('content', 'like', '%' . $search . '%')
                 ->orWhere('published_at', 'like', '%' . $search . '%');
         }
+
+        if ($request->category) {
+            $data_articles->where('articles.id_category', $request->category);
+        }
         return view('article', [
             'title' => 'Article',
             'data_articles' => $data_articles->paginate(9),
             'user_role' => $user_role,
+            'categories' => DB::table('categories')->get(),
             'session' => $session
         ]);
     }

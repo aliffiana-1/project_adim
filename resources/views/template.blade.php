@@ -148,7 +148,7 @@
                             <a style="font-size: 14px;" class="nav-link {{ $title == 'Level' ? 'active' : '' }}" href="{{ route('level_editor') }}">Level Center</a>
                         </li>
                         <li class="nav-item">
-                            {{-- <a style="font-size: 14px;" class="nav-link {{ $title == 'Category' ? 'active' : '' }}" href="{{ route('category_editor') }}">Category</a> --}}
+                            <a style="font-size: 14px;" class="nav-link {{ $title == 'Category' ? 'active' : '' }}" href="{{ route('category_editor') }}">Category Center</a>
                         </li>
                         <li class="nav-item">
                             <a style="font-size: 14px;" class="nav-link {{ $title == 'User' ? 'active' : '' }}" href="{{ route('user_editor') }}">User Center</a>
@@ -184,7 +184,8 @@
                                     <li class="px-3 py-2">
                                         <div class="fw-bold">{{ session('full_name') }}</div>
                                         <div class="text-muted" style="font-size:12px;">
-                                            {{ session('role_name') ?? 'User' }}
+                                            {{ session('role_name') == 'author' ? 'Penulis' : ucfirst(session('role_name')) }}
+
                                         </div>
                                     </li>
 
@@ -294,6 +295,10 @@
 
     @if ($title == 'User')
     @yield('user_editor')
+    @endif
+
+    @if ($title == 'Category')
+    @yield('category_editor')
     @endif
 
 

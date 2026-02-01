@@ -46,10 +46,10 @@ Route::post('/store_user', [UserController::class, 'store_user'])->name('store_u
 Route::post('/edit_user', [UserController::class, 'edit_user'])->name('edit_user');
 Route::post('/delete_user', [UserController::class, 'delete_user'])->name('delete_user');
 
-Route::get('/category-editor', [CategoryController::class, 'index'])->name('category_editor');
-Route::post('/store-category', [CategoryController::class, 'store'])->name('store_category');
-Route::post('/edit-category', [CategoryController::class, 'update'])->name('edit_category');
-Route::post('/delete-category', [CategoryController::class, 'delete'])->name('delete_category');
+Route::get('/category_editor', [CategoryController::class, 'index'])->name('category_editor');
+Route::post('/store_category', [CategoryController::class, 'store'])->name('store_category');
+Route::post('/edit_category', [CategoryController::class, 'update'])->name('edit_category');
+Route::post('/delete_category', [CategoryController::class, 'delete'])->name('delete_category');
 
 Route::get('/article/detail/{id}', [AuthorController::class, 'show_detail_article'])->name('/article/detail/{id}');
 

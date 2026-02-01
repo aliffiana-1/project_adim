@@ -99,6 +99,14 @@
                                     <form action="{{ route('edit_article') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="id_article" value="{{ $data->id_article }}">
+                                        @if($isAdmin)
+                                        <input type="hidden" name="id_category" value="{{ $data->id_category }}">
+                                        @endif
+
+                                        @if($isAdmin)
+                                        <input type="hidden" name="id_article_level" value="{{ $data->id_article_level }}">
+                                        @endif
+
 
                                         <div class="form-floating mb-2">
                                             <input type="text" name="title" class="form-control" value="{{ $data->title }}" {{ $isAdmin ? 'readonly' : '' }} required>

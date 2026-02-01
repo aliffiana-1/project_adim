@@ -9,6 +9,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
+        if (session('role_name') != 'admin') abort(403);
         $search = $request->search;
 
         $query = CategoriesModel::orderBy('id_category', 'desc');
@@ -18,7 +19,7 @@ class CategoryController extends Controller
         }
 
         return view('category_editor', [
-            'title' => 'Category Center',   
+            'title' => 'Category',
             'category_data' => $query->paginate($request->sortir ?? 10),
         ]);
     }
@@ -30,7 +31,9 @@ class CategoryController extends Controller
         ]);
 
         CategoriesModel::create([
-            'category_name' => $request->category_name
+            'category_name' => $request->category_name,
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
 
         session()->flash('success', 'Add category success!');
@@ -46,7 +49,8 @@ class CategoryController extends Controller
 
         CategoriesModel::where('id_category', $request->id_category)
             ->update([
-                'category_name' => $request->category_name
+                'category_name' => $request->category_name,
+                'updated_at' => now()
             ]);
 
         session()->flash('success', 'Update category success!');

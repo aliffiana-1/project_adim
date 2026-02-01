@@ -105,45 +105,60 @@
             </div>
         </div>
         @else
+        <div class="row mb-4 justify-content-end">
+            <div class="col-md-3">
+                <form method="GET" id="filter_category_form">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">-- All Category --</option>
+                        @foreach($categories as $cat)
+                        <option value="{{ $cat->id_category }}" {{ request('category') == $cat->id_category ? 'selected' : '' }}>
+                            {{ $cat->category_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+        </div>
+
         <div class="row g-5 mb-4">
             @foreach ($data_articles as$data)
             <div class="col-lg-4">
                 <div class="card-sl">
-                <div class="p-4" style="height: 300px;">
-                    <div class="card-text">
-                        <span style="color:grey">Last updated :
-                            {{ date('d/m/Y H:i', strtotime($data->created_at)) }}</span> <br>
-                        <span style="color:grey">Level :
-                            {{ $data->article_level_name }}</span>
+                    <div class="p-4" style="height: 300px;">
+                        <div class="card-text">
+                            <span style="color:grey">Last updated :
+                                {{ date('d/m/Y H:i', strtotime($data->created_at)) }}</span> <br>
+                            <span style="color:grey">Level :
+                                {{ $data->article_level_name }}</span>
+                        </div>
+                        <div class="card-heading text-uppercase">
+                            {{$data->title }}
+                        </div>
+                        <div class="card-text">
+                            {!!$data->content !!}
+                        </div>
                     </div>
-                    <div class="card-heading text-uppercase">
-                        {{$data->title }}
-                    </div>
-                    <div class="card-text">
-                        {!!$data->content !!}
-                    </div>
+
+                    <?php $link = '/article/detail/'; ?>
+
+                    <a class="card-button" href="{{ url($link .$data->id_article) }}" style="text-decoration: none;">Read
+                        More
+                    </a>
                 </div>
-
-                <?php $link = '/article/detail/'; ?>
-
-                <a class="card-button" href="{{ url($link .$data->id_article) }}" style="text-decoration: none;">Read
-                    More
-                </a>
+            </div>
+            @endforeach
+        </div>
+        @endif
+        <div class="row">
+            <div class="col-md-6 d-flex flex-column align-items-md-start" id="showing_page">
+                Showing
+                {!! $data_articles->firstItem() !!} to
+                {!! $data_articles->lastItem() !!} of {!! $data_articles->total() !!} entries
+            </div>
+            <div class="col-md-6 d-flex flex-column align-items-md-end" id="showing_page">
+                {!! $data_articles->appends(request()->all())->links() !!}
             </div>
         </div>
-        @endforeach
     </div>
-    @endif
-    <div class="row">
-        <div class="col-md-6 d-flex flex-column align-items-md-start" id="showing_page">
-            Showing
-            {!! $data_articles->firstItem() !!} to
-            {!! $data_articles->lastItem() !!} of {!! $data_articles->total() !!} entries
-        </div>
-        <div class="col-md-6 d-flex flex-column align-items-md-end" id="showing_page">
-            {!! $data_articles->appends(request()->all())->links() !!}
-        </div>
-    </div>
-</div>
 </div>
 @endsection
